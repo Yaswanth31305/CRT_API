@@ -1,0 +1,55 @@
+-- Create the database if it doesn't exist
+CREATE DATABASE IF NOT EXISTS student_expense_db1;
+
+-- Use the created database
+USE student_expense_db1;
+
+-- Create the student table
+CREATE TABLE IF NOT EXISTS student (
+    st_id INT PRIMARY KEY,
+    name VARCHAR(100) NOT NULL,
+    abranch VARCHAR(50),
+    phone VARCHAR(20)
+);
+
+-- Create the expense table
+CREATE TABLE IF NOT EXISTS expense (
+    expense_id INT AUTO_INCREMENT PRIMARY KEY,
+    expense_month VARCHAR(50),
+    total_expense FLOAT
+);
+
+-- Create the attendance table
+CREATE TABLE IF NOT EXISTS attendance (
+    att_id INT AUTO_INCREMENT PRIMARY KEY,
+    student_id INT,
+    month_name VARCHAR(50),
+    days_present INT,
+    UNIQUE(student_id, month_name),
+    FOREIGN KEY (student_id) REFERENCES student(st_id) ON DELETE CASCADE
+);
+
+-- Create the student_expense table
+CREATE TABLE IF NOT EXISTS student_expense (
+    se_id INT AUTO_INCREMENT PRIMARY KEY,
+    student_id INT,
+    expense_id INT,
+    student_month_expense FLOAT,
+    month_name VARCHAR(50),
+    FOREIGN KEY (student_id) REFERENCES student(st_id) ON DELETE CASCADE,
+    FOREIGN KEY (expense_id) REFERENCES expense(expense_id) ON DELETE CASCADE
+);
+
+-- Create the admin table
+CREATE TABLE IF NOT EXISTS admin (
+    admin_id VARCHAR(100) PRIMARY KEY,
+    password TEXT NOT NULL,
+    email VARCHAR(255) NOT NULL UNIQUE
+);
+
+-- Insert default admin records
+INSERT INTO admin (admin_id, password, email)
+VALUES 
+('admin001', 'admin@123', 'admin1@example.com'),
+('admin002', 'securepass456', 'admin2@example.com'),
+('admin003', 'admin789$', 'admin3@example.com');
