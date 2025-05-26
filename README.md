@@ -1,14 +1,5 @@
 Project Title:Student Mess Fees Management System
 
-Project Content:
-1. Project Title
-2. Project Code
-3. Key Technologies
-4. Description
-5. Output
-6. Further Research
-
-
 1. Project Title
 Student Mess Fees Management System
 
