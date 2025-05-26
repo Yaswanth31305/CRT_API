@@ -341,8 +341,6 @@ When the system is running, here are some example results:
   "days_present": 22,
   "total_fee": 2200
 }
-```
-
 The fee is calculated simply as:
 **days\_present × daily\_rate**
 
