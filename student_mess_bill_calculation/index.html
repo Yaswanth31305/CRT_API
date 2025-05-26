@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Mess Bill Management</title>
+<link href="https://fonts.googleapis.com/css2?family=Pacifico&display=swap" rel="stylesheet">
+<style>
+  /* Reset & base */
+  * {
+    box-sizing: border-box;
+  }
+  body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: url('index.jpg') no-repeat center center fixed; /* Changed to index.jpg */
+    backdrop-filter: blur(8px);
+    background-size: cover;
+    margin: 0;
+    padding: 0;
+    color: #333;
+    display: flex;
+    flex-direction: column; /* Main content is still a column */
+    align-items: center; /* Center content horizontally */
+    min-height: 100vh;
+    justify-content: center; /* Center content vertically */
+    text-align: center;
+    position: relative; /* Needed for ::before pseudo-element and absolute positioned h1 */
+    animation: backgroundPulse 60s ease-in-out infinite; /* Slow, mesmerizing movement */
+  }
+
+  /* Body background overlay for better contrast */
+  body::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(255, 255, 255, 0.2); /* Soft white overlay */
+    z-index: -1; /* Ensure it's behind content but above background image */
+  }
+
+  h1 {
+    font-family: 'Pacifico', cursive; /* New font */
+    font-size: 5rem;
+    color: #4a148c;
+    text-shadow: 2px 2px 5px rgba(0,0,0,0.15);
+    animation: fadeInDown 1.5s ease forwards;
+    /* New styles to move heading to top-left */
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    margin: 0; /* Remove default margins */
+    text-align: left; /* Ensure text itself is left-aligned */
+    z-index: 10; /* Ensure it's above other content */
+  }
+
+  /* Container for the welcome text and buttons */
+  .main-content-area {
+    display: flex;
+    flex-direction: row; /* Arrange text and buttons in a row on larger screens */
+    align-items: flex-start; /* Align items to the top of the row */
+    gap: 40px; /* Space between the text box and buttons */
+    max-width: 1200px; /* Limit overall width */
+    width: 90%; /* Responsive width */
+    padding: 20px;
+    
+  }
+
+  /* Glassmorphism effect for the welcome text box */
+  .welcome-text-box {
+    background: rgba(255, 255, 255, 0.15); /* Slightly less opaque */
+    backdrop-filter: blur(15px) saturate(180%); /* Stronger blur and saturation */
+    -webkit-backdrop-filter: blur(15px) saturate(180%);
+    border-radius: 20px;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    padding: 30px;
+    box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.2);
+    flex: 2; /* Take more space than buttons */
+    text-align: left; /* Align text inside to the left */
+    font-family: 'Pacifico', cursive; /* Same font as heading */
+    font-size: 1.1rem;
+    line-height: 1.6;
+    color: #333; /* Ensure readability */
+    margin-top: 80px;
+  }
+
+  /* Glassmorphism effect for buttons container (reusing existing class) */
+  .glass-container {
+    background: rgba(255, 255, 255, 0.15); /* Slightly less opaque */
+    backdrop-filter: blur(15px) saturate(180%); /* Stronger blur and saturation */
+    -webkit-backdrop-filter: blur(15px) saturate(180%);
+    border-radius: 40px;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    padding: 30px;
+    box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.2);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 30px; /* Space between buttons if they are direct children */
+    flex: 1; /* Take less space than text */
+    margin-top: 120px;
+    min-width: 250px; /* Ensure buttons container doesn't get too small */
+  }
+
+  button {
+    background: linear-gradient(45deg, #7b2ff7, #f107a3);
+    border: none;
+    border-radius: 12px;
+    color: white;
+    cursor: pointer;
+    font-size: 1.3rem;
+    margin: 0; /* Removed margin here as gap in container handles spacing */
+    padding: 18px 36px;
+    box-shadow: 0 6px 15px rgba(241, 7, 163, 0.5);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    position: relative;
+    overflow: hidden;
+    display: inline-flex;
+    align-items: center;
+    gap: 12px;
+    font-weight: 600;
+    user-select: none;
+    z-index: 1; /* Ensure button content is above pseudo-element */
+    width: 100%; /* Make buttons fill the container width */
+  }
+
+  /* Subtle button pseudo-element for hover effect */
+  button::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(255, 255, 255, 0.1); /* Light overlay */
+    transition: transform 0.4s ease-out;
+    transform: scaleX(0);
+    transform-origin: left;
+    z-index: -1;
+    border-radius: 12px;
+  }
+
+  button:hover::before {
+    transform: scaleX(1);
+  }
+
+  button:hover {
+    transform: translateY(-6px) scale(1.05);
+    box-shadow: 0 12px 20px rgba(241, 7, 163, 0.8);
+  }
+  button:focus {
+    outline: none;
+    /* Existing focus shadow */
+    box-shadow: 0 0 0 4px #f107a3cc;
+    /* New focus ring animation */
+    animation: focusRing 1.5s infinite alternate;
+  }
+
+  /* Emoji bounce animation */
+  .emoji {
+    display: inline-block;
+    animation: bounce 2s infinite;
+    font-size: 1.5rem;
+    transition: transform 0.2s ease-out; /* Smooth transition for quick scale */
+  }
+  .emoji.delay {
+    animation-delay: 0.3s;
+  }
+
+  /* Enhanced emoji animation on button hover */
+  button:hover .emoji {
+    transform: scale(1.2); /* Slightly larger on button hover */
+    animation: none; /* Stop bounce on hover for a different effect */
+  }
+
+  /* Fade in animation for heading */
+  @keyframes fadeInDown {
+    from {
+      opacity: 0;
+      transform: translateY(-50px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  /* Bounce animation for emojis */
+  @keyframes bounce {
+    0%, 100% {
+      transform: translateY(0);
+    }
+    50% {
+      transform: translateY(-10px);
+    }
+  }
+
+  /* Keyframes for a more advanced background ripple/pulse for the body */
+  @keyframes backgroundPulse {
+    0% {
+      background-position: 0% 50%;
+    }
+    50% {
+      background-position: 100% 50%;
+    }
+    100% {
+      background-position: 0% 50%;
+    }
+  }
+
+  /* Keyframes for focus ring animation */
+  @keyframes focusRing {
+    from {
+      box-shadow: 0 0 0 4px rgba(241, 7, 163, 0.5);
+    }
+    to {
+      box-shadow: 0 0 0 8px rgba(241, 7, 163, 0.2);
+    }
+  }
+
+  /* Responsive adjustments */
+  @media (max-width: 900px) { /* Adjust breakpoint for row to column */
+    .main-content-area {
+      flex-direction: column; /* Stack text and buttons vertically */
+      align-items: center; /* Center items when stacked */
+      gap: 30px;
+      margin-top: 120px; /* Give more space for the top heading */
+    }
+    .welcome-text-box, .glass-container {
+      flex: none; /* Remove flex sizing */
+      width: 90%; /* Full width for both on small screens */
+      max-width: 500px; /* Limit max width for readability */
+    }
+    h1 {
+      font-size: 2.5rem;
+      top: 15px;
+      left: 15px;
+    }
+  }
+
+  @media (max-width: 600px) {
+    h1 {
+      font-size: 2rem;
+    }
+    .welcome-text-box {
+      font-size: 1rem;
+      padding: 20px;
+    }
+    .glass-container {
+      padding: 20px;
+    }
+    button {
+      font-size: 1.1rem;
+      padding: 15px 20px;
+    }
+  }
+</style>
+</head>
+<body>
+
+<h1>
+  Mess Bill Management 
+  <span class="emoji" role="img" aria-label="money bag">💰</span>
+  <span class="emoji delay" role="img" aria-label="clipboard">📋</span>
+</h1>
+
+<div class="main-content-area">
+  <div class="welcome-text-box">
+    Welcome to the Mess Bill Management System!
+    <br><br>
+    This platform simplifies the tracking of daily meals, calculation of monthly bills, and management of student payments. Admins can efficiently oversee operations, while students can easily view their bill details and payment history.
+    <br><br>
+    Our goal is to provide a transparent and hassle-free experience for both mess management and students.
+  </div>
+
+  <div class="glass-container">
+    <button type="button" id="adminloginBtn">
+      <span role="img" aria-label="writing hand">✍️</span> Admin Login
+    </button>
+
+    <button type="button" id="studentLoginBtn">
+      <span role="img" aria-label="student">🎓</span> Student Login
+    </button>
+  </div>
+</div>
+
+<script>
+  // Example: Add click events to buttons
+  document.getElementById('adminloginBtn').addEventListener('click', () => {
+    window.location.href = 'adminlogin.html'; // redirect immediately
+    // window.location.href = 'admin-registration.html'; // alternative redirect
+  });
+
+  document.getElementById('studentLoginBtn').addEventListener('click', () => {
+    window.location.href = 'studentlogin.html'; // redirect immediately
+    // window.location.href = 'student-login.html'; // alternative redirect
+  });
+</script>
+
+</body>
+</html>

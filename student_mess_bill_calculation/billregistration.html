@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bill Register</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <style>
+        /* Ensure html takes full height for body's min-height to work correctly */
+        html {
+            height: 100%;
+        }
+
+        /* Basic body styling for full page layout */
+        body {
+            font-family: 'Inter', sans-serif;
+            /* Background image with a linear gradient overlay for visual appeal.
+               IMPORTANT: Ensure 'bill.jpg' is in the same directory as this HTML file,
+               or provide the correct relative/absolute path to the image. */
+            background:url("bill.jpg");
+            background-size: cover; /* Ensures the image covers the entire background */
+            background-position: center; /* Centers the background image */
+            display: flex;
+            justify-content: center; /* Centers horizontally */
+            align-items: center;   /* Centers vertically */
+            min-height: 100vh;     /* Ensures body takes at least full viewport height */
+            margin: 0;             /* Remove default body margin */
+            padding: 0;            /* Removed padding to ensure perfect centering */
+            box-sizing: border-box;
+            /* Fallback background if image fails to load */
+            background-color: #F0F2F5;
+        }
+
+        /* Container for the form, with styling for appearance and animation */
+        .container {
+            background-color: #ffffff;
+            padding: 40px;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 450px;
+            box-sizing: border-box;
+            /* Animation applied here */
+            animation: fadeIn 0.8s ease-out;
+        }
+
+        /* Keyframe animation for fading in the container */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Styling for the main heading */
+        h2 {
+            text-align: center;
+            color: #4A90E2;
+            margin-bottom: 35px;
+            font-size: 2.2em;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        /* Spacing for form groups */
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        /* Styling for form labels */
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #555555;
+            font-size: 0.95em;
+        }
+
+        /* Styling for input fields and select dropdown */
+        input[type="number"],
+        input[type="text"],
+        select {
+            width: 100%;
+            padding: 12px 15px;
+            border: 1px solid #e0e0e0;
+            border-radius: 8px;
+            box-sizing: border-box;
+            font-size: 1em;
+            color: #333333;
+            transition: border-color 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        /* Focus styles for input fields and select dropdown */
+        input[type="number"]:focus,
+        input[type="text"]:focus,
+        select:focus {
+            border-color: #4A90E2;
+            box-shadow: 0 0 0 3px rgba(74, 144, 226, 0.2); /* Adjusted shadow color to match blue */
+            outline: none;
+        }
+
+        /* Styling for the submit button */
+        button {
+            background-color: #4A90E2;
+            color: white;
+            padding: 14px 25px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            width: 100%;
+            font-size: 1.1em;
+            font-weight: 600;
+            margin-top: 25px;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+            box-shadow: 0 44px 10px rgba(0, 123, 255, 0.2); /* Adjusted shadow color to match blue */
+        }
+
+        /* Hover effect for the button */
+        button:hover {
+            background-color: #357ABD;
+            transform: translateY(-2px);
+        }
+
+        /* Active (click) effect for the button */
+        button:active {
+            transform: translateY(0);
+        }
+
+        /* Styling for the message display area */
+        #message {
+            margin-top: 25px;
+            padding: 15px;
+            border-radius: 8px;
+            text-align: center;
+            font-weight: 600;
+            /* Hidden by default, then displayed with animation */
+            display: none;
+            font-size: 0.95em;
+            /* Animation applied here */
+            animation: slideIn 0.5s ease-out;
+        }
+
+        /* Keyframe animation for sliding in the message */
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Success message styling */
+        .success {
+            background-color: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+
+        /* Error message styling */
+        .error {
+            background-color: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+
+        /* Info message styling (for simulated navigation/logout) */
+        .info {
+            background-color: #e2f2ff; /* Light blue */
+            color: #0056b3; /* Darker blue */
+            border: 1px solid #a8d9ff;
+        }
+
+        .back-to-home::before {
+            content: "🏠"; /* Home emoji */
+            font-size: 1.1em;
+            margin-right: 0.5em;
+        }
+
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Calculate Monthly Bill <span role="img" aria-label="money bag">💰</span></h2>
+        <form id="billRegisterForm">
+            <div class="form-group">
+                <label for="month">Month:</label>
+                <select id="month" name="month" required>
+                    <option value="">🗓 Select Month</option>
+                    <option value="January">January</option>
+                    <option value="February">February</option>
+                    <option value="March">March</option>
+                    <option value="April">April</option>
+                    <option value="May">May</option>
+                    <option value="June">June</option>
+                    <option value="July">July</option>
+                    <option value="August">August</option>
+                    <option value="October">October</option>
+                    <option value="November">November</option>
+                    <option value="December">December</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="totalMonthDay">Total Days in Month:</label>
+                <input type="number" id="totalMonthDay" name="total_month_day" min="28" max="31" required placeholder="📅 e.g., 30 days">
+            </div>
+            <div class="form-group">
+                <label for="totalExpense">Total Expense:</label>
+                <input type="number" id="totalExpense" name="total_expense" min="0" step="0.01" required placeholder="💸 e.g., 5000.00">
+            </div>
+            <button type="submit">Calculate Bill <span role="img" aria-label="calculator">🧮</span></button>
+        </form>
+        <div id="message"></div><br>
+         <a href="admindashboard.html" class="back-to-home">Back to Home</a>
+    </div>
+
+    <script>
+    document.getElementById('billRegisterForm').addEventListener('submit', async function(event) {
+        event.preventDefault();
+
+        const month = document.getElementById('month').value;
+        const totalMonthDay = document.getElementById('totalMonthDay').value;
+        const totalExpense = document.getElementById('totalExpense').value;
+        const messageDiv = document.getElementById('message');
+
+        messageDiv.style.display = 'none';
+
+        try {
+            const response = await fetch('http://localhost:5000/billregister', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    month: month,
+                    total_month_day: totalMonthDay,
+                    total_expense: totalExpense
+                })
+            });
+
+            const result = await response.json();
+
+            if (response.ok) {
+                messageDiv.classList.remove('error');
+                messageDiv.classList.add('success');
+                messageDiv.textContent = result.message + ' 🎉';
+                document.getElementById('billRegisterForm').reset();
+            } else {
+                messageDiv.classList.remove('success');
+                messageDiv.classList.add('error');
+                messageDiv.textContent = result.message + ' ❌' || 'An error occurred. 😟';
+            }
+        } catch (error) {
+            messageDiv.classList.remove('success');
+            messageDiv.classList.add('error');
+            messageDiv.textContent = 'Network error or API is unreachable. 📡';
+            console.error('Error:', error);
+        } finally {
+            messageDiv.style.display = 'block';
+        }
+    });
+
+    document.getElementById('month').addEventListener('change', function() {
+        const selectedMonth = this.value;
+        const totalMonthDayInput = document.getElementById('totalMonthDay');
+        let daysInMonth = '';
+
+        switch (selectedMonth) {
+            case 'January':
+            case 'March':
+            case 'May':
+            case 'July':
+            case 'August':
+            case 'October':
+            case 'December':
+                daysInMonth = 31;
+                break;
+            case 'April':
+            case 'June':
+            case 'September':
+            case 'November':
+                daysInMonth = 30;
+                break;
+            case 'February':
+                daysInMonth = 28;
+                break;
+            default:
+                daysInMonth = '';
+                break;
+        }
+
+        totalMonthDayInput.value = daysInMonth;
+    });
+
+    function navigateTo(url) {
+        const messageDiv = document.getElementById('message');
+        messageDiv.classList.remove('success', 'error');
+        messageDiv.classList.add('info');
+        messageDiv.textContent = `Navigation to "${url}" is simulated. In a live environment, this would take you to a new page.`;
+        messageDiv.style.display = 'block';
+        console.log(`Attempted to navigate to: ${url}`);
+    }
+
+    function logout() {
+        localStorage.removeItem("adminToken");
+        const messageDiv = document.getElementById('message');
+        messageDiv.classList.remove('success', 'error');
+        messageDiv.classList.add('info');
+        messageDiv.textContent = `Logout simulated. In a live environment, this would redirect you to the login page.`;
+        messageDiv.style.display = 'block';
+        console.log('Logout function called.');
+    }
+</script>
+
+</body>
+</html>

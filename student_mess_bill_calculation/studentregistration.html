@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Registration Form</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #4A90E2; /* Blue, matching attendance page */
+            --primary-hover: #357ABD; /* Darker blue, matching attendance page */
+            --background-light: #eef2f6;
+            --card-background: #ffffff;
+            --text-dark: #333333;
+            --text-medium: #555555;
+            --border-color: #e0e0e0;
+            --success-bg: #d4edda;
+            --success-text: #155724;
+            --error-bg: #f8d7da;
+            --error-text: #721c24;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: url("registration.jpg") no-repeat center center fixed; /* Placeholder image for studentregistration.jpg */
+            backdrop-filter: blur(8px);
+            background-size: cover;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            padding: 20px;
+            box-sizing: border-box;
+        }
+
+        .container {
+            /* Changed background-color to transparent or a very low rgba value */
+            background-color: rgba(255, 255, 255, 0.1); /* Very light transparent white */
+            backdrop-filter: blur(8px); /* Keep the frosted glass effect */
+            padding: 40px;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            margin-left: 500px;
+            max-width: 450px;
+            box-sizing: border-box;
+            animation: fadeIn 0.8s ease-out;
+            border: 1px solid rgba(255, 255, 255, 0.2); /* Add a subtle border for definition */
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        h2 {
+            text-align: center;
+            color: var(--primary-color);
+            margin-bottom: 35px;
+            font-size: 2.2em;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+            text-align: left;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: var(--text-medium);
+            font-size: 0.95em;
+        }
+
+        input[type="text"],
+        input[type="tel"] {
+            width: 100%;
+            padding: 12px 15px;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            box-sizing: border-box;
+            font-size: 1em;
+            color: var(--text-dark);
+            transition: border-color 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        input[type="text"]:focus,
+        input[type="tel"]:focus {
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(74, 144, 226, 0.2);
+            outline: none;
+        }
+
+        button {
+            background-color: var(--primary-color);
+            color: white;
+            padding: 14px 25px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            width: 100%;
+            font-size: 1.1em;
+            font-weight: 600;
+            margin-top: 25px;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+            box-shadow: 0 4px 10px rgba(0, 123, 255, 0.2);
+        }
+
+        button:hover {
+            background-color: var(--primary-hover);
+            transform: translateY(-2px);
+        }
+
+        button:active {
+            transform: translateY(0);
+        }
+
+        #message {
+            margin-top: 25px;
+            padding: 15px;
+            border-radius: 8px;
+            text-align: center;
+            display: none; /* Hidden by default */
+            font-weight: 600;
+            font-size: 0.95em;
+            animation: slideIn 0.5s ease-out;
+        }
+
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .success {
+            background-color: var(--success-bg);
+            color: var(--success-text);
+            border: 1px solid #c3e6cb;
+        }
+
+        .error {
+            background-color: var(--error-bg);
+            color: var(--error-text);
+            border: 1px solid #f5c6cb;
+        }
+
+        .back-to-home::before {
+            content: "🏠"; /* Home emoji */
+            font-size: 1.1em;
+            margin-right: 0.5em;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Student Registration <span role="img" aria-label="student">🧑‍🎓</span></h2>
+        <form id="registrationForm">
+            <div class="form-group">
+                <label for="st_id">Student ID:</label>
+                <input type="text" id="st_id" name="st_id" required placeholder="🆔 e.g., 123456">
+            </div>
+
+            <div class="form-group">
+                <label for="name">Name:</label>
+                <input type="text" id="name" name="name" required placeholder="📝 e.g., John Doe">
+            </div>
+
+            <div class="form-group">
+                <label for="abranch">Branch:</label>
+                <input type="text" id="abranch" name="abranch" required placeholder="🏛️ e.g., Computer Science">
+            </div>
+
+            <div class="form-group">
+                <label for="phone">Phone Number:</label>
+                <input type="tel" id="phone" name="phone" pattern="[0-9]{10}" required placeholder="📞 10-digit number e.g., 9876543210">
+            </div>
+
+            <button type="submit">Register <span role="img" aria-label="plus sign">➕</span></button>
+        </form>
+        <div id="message"></div><br>
+         <a href="admindashboard.html" class="back-to-home">Back to Home</a>
+
+    <script>
+        document.getElementById('registrationForm').addEventListener('submit', async function(event) {
+            event.preventDefault(); // Prevent default form submission
+
+            const studentId = document.getElementById('st_id').value;
+            const name = document.getElementById('name').value;
+            const branch = document.getElementById('abranch').value;
+            const phone = document.getElementById('phone').value;
+            const messageDiv = document.getElementById('message');
+
+            messageDiv.style.display = 'none'; // Hide previous messages
+
+            try {
+                // Assuming your Flask app is running on http://localhost:5000/
+                // If not, replace the URL accordingly.
+                const response = await fetch('http://localhost:5000/registerstudent', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        st_id: studentId,
+                        name: name,
+                        abranch: branch,
+                        phone: phone
+                    })
+                });
+
+                const result = await response.json();
+
+                if (response.ok) {
+                    messageDiv.classList.remove('error');
+                    messageDiv.classList.add('success');
+                    messageDiv.textContent = result.message + ' 🎉'; // Add confetti emoji
+                    document.getElementById('registrationForm').reset(); // Clear the form on success
+                } else {
+                    messageDiv.classList.remove('success');
+                    messageDiv.classList.add('error');
+                    messageDiv.textContent = result.message + ' ❌' || 'An error occurred during registration. 😟'; // Add cross emoji
+                }
+            } catch (error) {
+                messageDiv.classList.remove('success');
+                messageDiv.classList.add('error');
+                messageDiv.textContent = 'Network error or API is unreachable. Please check console for details. 📡'; // Add satellite emoji
+                console.error('Error:', error);
+            } finally {
+                messageDiv.style.display = 'block'; // Show the message
+            }
+        });
+    </script>
+</body>
+</html>

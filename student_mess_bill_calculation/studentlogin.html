@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Login</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #4A90E2; /* Blue, matching other pages */
+            --primary-hover: #357ABD; /* Darker blue */
+            --background-light: #eef2f6;
+            --card-background: #ffffff;
+            --text-dark: #333333;
+            --text-medium: #555555;
+            --border-color: #e0e0e0;
+            --success-bg: #d4edda;
+            --success-text: #155724;
+            --error-bg: #f8d7da;
+            --error-text: #721c24;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: url("studentlogin.jpg") no-repeat center center fixed; /* Placeholder image for studentlogin.jpg */
+            background-size: cover;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            padding: 20px;
+            box-sizing: border-box;
+        }
+
+        .login-container {
+            background-color: var(--card-background);
+            padding: 40px;
+            border-radius: 15px; /* More rounded corners */
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1); /* Enhanced shadow */
+            width: 100%;
+            margin-top:100px;
+            margin-right: 600px; 
+            max-width: 450px; 
+            text-align: center;
+            box-sizing: border-box;
+            animation: fadeIn 0.8s ease-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        h2 {
+            text-align: center;
+            color: var(--primary-color);
+            margin-bottom: 35px; /* Increased margin */
+            font-size: 2.2em; /* Larger font size */
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px; /* Space for emoji */
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+            text-align: left;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600; /* Bolder label */
+            color: var(--text-medium);
+            font-size: 0.95em; /* Slightly smaller label font */
+        }
+
+        input[type="number"],
+        input[type="text"] {
+            width: 100%;
+            padding: 12px 15px; /* Increased padding */
+            border: 1px solid var(--border-color);
+            border-radius: 8px; /* More rounded input fields */
+            box-sizing: border-box;
+            font-size: 1em;
+            color: var(--text-dark);
+            transition: border-color 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        input[type="number"]:focus,
+        input[type="text"]:focus {
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(74, 144, 226, 0.2); /* Blue focus shadow */
+            outline: none;
+        }
+
+        button {
+            background-color: var(--primary-color);
+            color: white;
+            padding: 14px 25px;
+            border: none;
+            border-radius: 8px; /* More rounded button */
+            cursor: pointer;
+            width: 100%;
+            font-size: 1.1em;
+            font-weight: 600;
+            margin-top: 25px;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+            box-shadow: 0 4px 10px rgba(0, 123, 255, 0.2); /* Blue button shadow */
+        }
+
+        button:hover {
+            background-color: var(--primary-hover);
+            transform: translateY(-2px); /* Lift effect on hover */
+        }
+
+        button:active {
+            transform: translateY(0); /* Press effect */
+        }
+
+        #message {
+            margin-top: 25px;
+            padding: 15px; /* Increased padding */
+            border-radius: 8px; /* More rounded message box */
+            text-align: center;
+            display: none;
+            font-weight: 600;
+            font-size: 0.95em;
+            animation: slideIn 0.5s ease-out;
+        }
+
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .success {
+            background-color: var(--success-bg);
+            color: var(--success-text);
+            border: 1px solid #c3e6cb;
+        }
+
+        .error {
+            background-color: var(--error-bg);
+            color: var(--error-text);
+            border: 1px solid #f5c6cb;
+        }
+
+        .back-to-home::before {
+            content: "🏠"; /* Home emoji */
+            font-size: 1.1em;
+            margin-right: 0.5em;
+        }
+        
+    </style>
+</head>
+<body>
+    <div class="login-container">
+        <h2>Student Login <span role="img" aria-label="key">🔑</span></h2>
+        <form id="loginForm">
+            <div class="form-group">
+                <label for="studentId">Student ID:</label>
+                <input type="number" id="studentId" name="st_id" required placeholder="🆔 e.g., 123456">
+            </div>
+            <div class="form-group">
+                <label for="phone">Phone Number:</label>
+                <input type="text" id="phone" name="phone" required placeholder="📞 10-digit number">
+            </div>
+            <button type="submit">Login <span role="img" aria-label="arrow right">➡️</span></button>
+        </form>
+        <div id="message"></div><br>
+         <a href="index.html" class="back-to-home">Back to Home</a>
+    </div>
+
+    <script>
+        document.getElementById('loginForm').addEventListener('submit', async function(event) {
+            event.preventDefault(); // Prevent default form submission
+
+            const studentId = document.getElementById('studentId').value;
+            const phone = document.getElementById('phone').value;
+            const messageDiv = document.getElementById('message');
+
+            messageDiv.style.display = 'none'; // Hide previous messages
+
+            try {
+                // Corrected API endpoint from '/studentlogin' to '/loginexpense'
+                const response = await fetch('http://localhost:5000/studentlogin', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        st_id: studentId,
+                        phone: phone
+                    })
+                });
+
+                const result = await response.json();
+
+                if (response.ok) {
+                    messageDiv.classList.remove('error');
+                    messageDiv.classList.add('success');
+                    messageDiv.textContent = (result.message || 'Login successful!') + ' 🎉'; // Add confetti emoji
+                    // Store student data in sessionStorage and redirect
+                    sessionStorage.setItem('studentData', JSON.stringify(result));
+                    window.location.href = 'studentexpenses.html'; // Redirect to the expenses page
+                } else {
+                    messageDiv.classList.remove('success');
+                    messageDiv.classList.add('error');
+                    messageDiv.textContent = (result.message || 'Login failed. Please check your credentials.') + ' ❌'; // Add cross emoji
+                }
+            } catch (error) {
+                messageDiv.classList.remove('success');
+                messageDiv.classList.add('error');
+                messageDiv.textContent = 'Network error or API is unreachable. Please check console for details. 📡'; // Add satellite emoji
+                console.error('Error:', error);
+            } finally {
+                messageDiv.style.display = 'block'; // Show the message
+            }
+        });
+    </script>
+</body>
+</html>

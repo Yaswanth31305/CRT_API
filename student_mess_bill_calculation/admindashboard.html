@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Admin Dashboard</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      /* Define a professional and colorful palette */
+      --primary-color: #4A90E2; /* A vibrant blue */
+      --secondary-color: #50E3C2; /* A refreshing teal */
+      --dark-text: #2C3E50; /* Dark text for headings */
+      --light-text: #555; /* Lighter text for body/labels */
+      --bg-light: #F0F2F5; /* Light background for the body */
+      --card-bg: #FFFFFF; /* White background for cards */
+      --card-hover-bg: #E3F2FD; /* Light blue hover for cards */
+      --button-bg: #4A90E2; /* Button background matches primary */
+      --button-hover-bg: #357ABD; /* Darker blue on hover */
+      --border-color: #E0E0E0; /* Light border for subtle separation */
+      --logout-button-bg: #E74C3C; /* Red for logout */
+      --logout-button-hover-bg: #C0392B; /* Darker red on hover */
+    }
+
+    body {
+      font-family: 'Poppins', sans-serif;
+      background:url("dashboard.jpg") no-repeat center center fixed; /* Placeholder image for dashboard */
+      background-size: cover;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      color: var(--light-text);
+      position: relative;
+    }
+    body::before {
+      content: "";
+      position: fixed;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: rgba(173, 173, 173, 0.85); /* Soft overlay */
+      z-index: -1;
+    }
+
+    .dashboard-container {
+      max-width: 1100px; /* Slightly wider container */
+      margin: 30px auto; /* Adjusted margin */
+      background: var(--card-bg);
+      border-radius: 16px; /* More rounded corners */
+      box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1); /* Enhanced shadow */
+      padding: 50px 40px; /* Increased padding */
+      box-sizing: border-box; /* Include padding in width */
+      animation: fadeIn 0.8s ease-out; /* Fade in animation */
+    }
+
+    .header-section {
+      display: flex;
+      justify-content: space-between; /* Space out heading and button */
+      align-items: center; /* Vertically align them */
+      margin-bottom: 40px; /* Space below the header section */
+      position: relative; /* For the h1::after pseudo-element positioning */
+    }
+
+    h1 {
+      color: var(--dark-text);
+      font-size: 38px; /* Larger heading */
+      font-weight: 700; /* Bolder heading */
+      letter-spacing: 0.5px;
+      position: relative;
+      padding-bottom: 15px;
+      margin: 0; /* Remove default margin to control spacing with flexbox */
+    }
+
+    h1::after {
+      content: '';
+      position: absolute;
+      left: 0; /* Align underline to the left of the heading */
+      bottom: 0;
+      width: 80px; /* Underline for heading */
+      height: 4px;
+      background: linear-gradient(90deg, var(--primary-color), var(--secondary-color));
+      border-radius: 2px;
+    }
+
+    .logout-button {
+      background: var(--logout-button-bg);
+      color: #fff;
+      border: none;
+      padding: 10px 20px; /* Smaller padding for logout button */
+      border-radius: 8px;
+      font-size: 16px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: background 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
+      box-shadow: 0 3px 8px rgba(0, 0, 0, 0.15);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .logout-button:hover {
+      background: var(--logout-button-hover-bg);
+      transform: translateY(-2px);
+      box-shadow: 0 5px 12px rgba(0, 0, 0, 0.25);
+    }
+
+    .dashboard-menu {
+      display: grid; /* Use CSS Grid for better layout control */
+      grid-template-columns: repeat(2, 1fr); /* Always try for 2 columns on wider screens */
+      gap: 30px; /* Increased gap between cards */
+      margin-top: 0; /* Removed margin-top as it's handled by header-section */
+    }
+
+    /* Rule for the card that should span two columns */
+    .dashboard-card.span-two-columns {
+        grid-column: span 2; /* Make this card span both columns */
+    }
+
+    .dashboard-card {
+      background: var(--card-bg);
+      border-radius: 12px; /* Consistent border-radius */
+      padding: 35px 25px; /* Adjusted padding */
+      text-align: center;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08); /* Soft shadow for cards */
+      transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1); /* Smoother transition */
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: space-between; /* Distribute content */
+      border: 1px solid var(--border-color); /* Subtle border */
+    }
+
+    .dashboard-card:hover {
+      background: var(--card-hover-bg); /* Light blue hover background */
+      box-shadow: 0 12px 30px rgba(0, 0, 0, 0.15); /* More pronounced shadow on hover */
+      transform: translateY(-8px); /* Lift effect on hover */
+      border-color: var(--primary-color); /* Highlight border on hover */
+    }
+
+    .dashboard-card i {
+      font-size: 55px; /* Larger icons */
+      color: var(--primary-color); /* Icons match primary color */
+      margin-bottom: 25px; /* More space below icon */
+      transition: color 0.3s ease;
+    }
+
+    .dashboard-card:hover i {
+      color: var(--secondary-color); /* Icon color changes on hover */
+    }
+
+    .dashboard-card h3 {
+      font-size: 24px;
+      color: var(--dark-text);
+      margin-bottom: 20px;
+      font-weight: 600;
+    }
+
+    .dashboard-card button {
+      background: var(--button-bg);
+      color: #fff;
+      border: none;
+      padding: 15px 30px; /* Larger button padding */
+      border-radius: 8px; /* More rounded button */
+      font-size: 18px; /* Larger button text */
+      font-weight: 600;
+      cursor: pointer;
+      transition: background 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
+      margin-top: 20px; /* More space above button */
+      width: 80%; /* Button width */
+      max-width: 200px; /* Max width for button */
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+      letter-spacing: 0.5px;
+    }
+
+    .dashboard-card button:hover {
+      background: var(--button-hover-bg); /* Darker blue on hover */
+      transform: translateY(-2px); /* Slight lift on button hover */
+      box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
+    }
+
+    /* Animations */
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* Responsive adjustments */
+    @media (max-width: 992px) {
+      .dashboard-container {
+        padding: 40px 30px;
+      }
+      .header-section {
+        flex-direction: column; /* Stack heading and logout button on smaller screens */
+        align-items: center;
+        text-align: center;
+        margin-bottom: 30px;
+      }
+      h1 {
+        font-size: 32px;
+        margin-bottom: 20px; /* Space between heading and stacked logout button */
+      }
+      h1::after {
+        left: 50%; /* Center underline when heading is centered */
+        transform: translateX(-50%);
+      }
+      .logout-button {
+        width: auto; /* Allow button to size naturally */
+        margin-top: 10px; /* Space above button when stacked */
+      }
+      .dashboard-menu {
+        /* On medium screens, still try for 2 columns, but allow them to shrink */
+        grid-template-columns: repeat(2, minmax(200px, 1fr));
+        gap: 25px;
+      }
+      /* Ensure the span-two-columns class still works on medium screens */
+      .dashboard-card.span-two-columns {
+          grid-column: span 2;
+      }
+      .dashboard-card i {
+        font-size: 50px;
+      }
+      .dashboard-card h3 {
+        font-size: 22px;
+      }
+      .dashboard-card button {
+        font-size: 16px;
+        padding: 13px 25px;
+      }
+    }
+
+    @media (max-width: 768px) {
+      .dashboard-container {
+        margin: 20px;
+        padding: 30px 20px;
+      }
+      h1 {
+        font-size: 28px;
+        margin-bottom: 25px;
+      }
+      .dashboard-menu {
+        grid-template-columns: 1fr; /* Stack cards on smaller screens */
+        gap: 20px;
+      }
+      /* Remove grid-column span for span-two-columns on small screens to allow stacking */
+      .dashboard-card.span-two-columns {
+          grid-column: auto;
+      }
+      .dashboard-card {
+        padding: 30px 20px;
+      }
+      .dashboard-card i {
+        font-size: 45px;
+      }
+      .dashboard-card h3 {
+        font-size: 20px;
+      }
+      .dashboard-card button {
+        width: 90%;
+        max-width: none;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .dashboard-container {
+        padding: 25px 15px;
+      }
+      h1 {
+        font-size: 24px;
+        margin-bottom: 20px;
+      }
+      .dashboard-card i {
+        font-size: 40px;
+      }
+      .dashboard-card h3 {
+        font-size: 18px;
+      }
+      .dashboard-card button {
+        font-size: 15px;
+        padding: 12px 20px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="dashboard-container">
+    <div class="header-section">
+      <h1>Admin Dashboard</h1>
+      <button class="logout-button" onclick="logout()">
+        <i class="fas fa-sign-out-alt"></i> Logout
+      </button>
+    </div>
+    <div class="dashboard-menu">
+      <div class="dashboard-card">
+        <i class="fas fa-calendar-check"></i>
+        <h3>Mark Attendance</h3>
+        <button onclick="navigateTo('attendance.html')">View Attendance</button>
+      </div>
+      <div class="dashboard-card">
+        <i class="fas fa-file-invoice-dollar"></i>
+        <h3>Monthly Expenses</h3>
+        <button onclick="navigateTo('billregistration.html')">Handle Bills</button>
+      </div>
+      <div class="dashboard-card span-two-columns">
+        <i class="fas fa-user-plus"></i>
+        <h3>Student Registration</h3>
+        <button onclick="navigateTo('studentregistration.html')">Manage Students</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    function navigateTo(url) {
+      // In a real application, you might want to add more robust navigation
+      // or client-side routing here.
+      window.location.href = url;
+    }
+
+    function logout() {
+      // Remove the admin token from local storage
+      localStorage.removeItem("adminToken");
+      // Redirect to the home/login page
+      window.location.href = "index.html";
+    }
+  </script>
+</body>
+</html>

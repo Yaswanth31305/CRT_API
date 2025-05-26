@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Expenses Details</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #4A90E2; /* Blue, matching other pages */
+            --primary-hover: #357ABD; /* Darker blue */
+            --background-light: #eef2f6;
+            --card-background: #ffffff;
+            --text-dark: #333333;
+            --text-medium: #555555;
+            --border-color: #e0e0e0;
+            --success-bg: #d4edda;
+            --success-text: #155724;
+            --error-bg: #f8d7da;
+            --error-text: #721c24;
+            --logout-color: #dc3545; /* Red for logout */
+            --logout-hover: #c82333;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: url("expenses.jpg") no-repeat center center fixed; /* Placeholder image for studentexpenses.jpg */
+            background-size: cover;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            padding: 20px;
+            box-sizing: border-box;
+        }
+
+        .container {
+            /* Changed background-color to transparent or a very low rgba value */
+            background-color: rgba(214, 214, 214, 0.1); /* Very light transparent white */
+            backdrop-filter: blur(8px); /* Keep the frosted glass effect */
+            padding: 40px;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 800px;
+            box-sizing: border-box;
+            animation: fadeIn 0.8s ease-out;
+            border: 1px solid rgba(255, 255, 255, 0.2); /* Add a subtle border for definition */
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        h2 {
+            color: var(--primary-color);
+            margin-bottom: 35px;
+            font-size: 2.2em;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        h3 {
+            color: var(--text-dark);
+            margin-top: 30px;
+            margin-bottom: 20px;
+            font-size: 1.6em;
+            font-weight: 600;
+        }
+
+        /* Removed .input-group styling as it's no longer needed */
+
+        .student-info {
+            margin-bottom: 30px;
+            font-size: 1.1em;
+            color: var(--text-dark);
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 20px;
+        }
+
+        .student-info p {
+            margin: 8px 0;
+            font-weight: 500;
+        }
+
+        .student-info strong {
+            font-weight: 700;
+        }
+
+        .expense-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+            border-radius: 8px;
+            overflow: hidden; /* Ensures rounded corners apply to table content */
+        }
+
+        .expense-table th, .expense-table td {
+            border: 1px solid var(--border-color);
+            padding: 12px;
+            text-align: left;
+        }
+
+        .expense-table th {
+            background-color: var(--primary-color);
+            color: white;
+            font-weight: 700;
+            font-size: 1em;
+        }
+
+        .expense-table tbody tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+        .expense-table tbody tr:nth-child(odd) {
+            background-color: var(--card-background);
+        }
+
+        .expense-table tbody tr:hover {
+            background-color: #e9e9e9;
+        }
+
+        #message {
+            margin-top: 30px;
+            padding: 15px;
+            border-radius: 8px;
+            text-align: center;
+            font-size: 1em;
+            font-weight: 600;
+            display: none;
+            animation: slideIn 0.5s ease-out;
+        }
+
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .success {
+            background-color: var(--success-bg);
+            color: var(--success-text);
+            border: 1px solid #c3e6cb;
+        }
+
+        .error {
+            background-color: var(--error-bg);
+            color: var(--error-text);
+            border: 1px solid #f5c6cb;
+        }
+
+        .logout-button {
+            background-color: var(--logout-color);
+            color: white;
+            padding: 12px 25px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 1.1em;
+            font-weight: 600;
+            margin-top: 30px;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+            box-shadow: 0 4px 10px rgba(220, 53, 69, 0.2);
+        }
+        .logout-button:hover {
+            background-color: var(--logout-hover);
+            transform: translateY(-2px);
+        }
+        .logout-button:active {
+            transform: translateY(0);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Student Expense Details <span role="img" aria-label="money with wings">💸</span></h2>
+
+        <div id="studentInfo" class="student-info">
+            <p><strong>Student ID:</strong> <span id="displayStudentId">N/A</span></p>
+            <p><strong>Name:</strong> <span id="displayName">N/A</span></p>
+        </div>
+
+        <h3>Expense History</h3>
+        <table class="expense-table">
+            <thead>
+                <tr>
+                    <th>Month</th>
+                    <th>Amount</th>
+                </tr>
+            </thead>
+            <tbody id="expenseHistoryTableBody">
+                </tbody>
+        </table>
+        <div id="message"></div>
+
+        <button id="logoutButton" class="logout-button">Logout <span role="img" aria-label="door">🚪</span></button>
+    </div>
+
+    <script>
+        async function fetchStudentExpenses(id) {
+            const displayStudentId = document.getElementById('displayStudentId');
+            const displayName = document.getElementById('displayName');
+            const expenseHistoryTableBody = document.getElementById('expenseHistoryTableBody');
+            const messageDiv = document.getElementById('message');
+
+            // Clear previous messages and table content
+            messageDiv.style.display = 'none';
+            messageDiv.classList.remove('success', 'error');
+            expenseHistoryTableBody.innerHTML = ''; // Clear table body
+            displayName.textContent = 'N/A'; // Reset name display
+
+            if (!id) {
+                // This case should ideally not be hit if redirection works correctly
+                messageDiv.classList.add('error');
+                messageDiv.textContent = 'Student ID not available. Please log in. 🚫';
+                messageDiv.style.display = 'block';
+                displayStudentId.textContent = 'N/A';
+                return;
+            }
+
+            displayStudentId.textContent = id; // Update displayed ID immediately
+
+            try {
+                // Construct the API URL with the student_id
+                // Assuming your Flask app is running on http://localhost:5000/
+                const response = await fetch(`http://localhost:5000/studentexpense/${id}`, {
+                    method: 'GET',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    }
+                });
+
+                const result = await response.json();
+
+                if (response.ok) {
+                    displayName.textContent = result.name || 'N/A';
+
+                    if (result.expense_history && result.expense_history.length > 0) {
+                        result.expense_history.forEach(expense => {
+                            const row = expenseHistoryTableBody.insertRow();
+                            const monthCell = row.insertCell();
+                            const amountCell = row.insertCell();
+                            monthCell.textContent = expense.month;
+                            amountCell.textContent = `₹${parseFloat(expense.amount).toFixed(2)}`;
+                        });
+                        messageDiv.style.display = 'none'; // Hide message if data is successfully loaded
+                    } else {
+                        messageDiv.classList.add('success');
+                        messageDiv.textContent = `No expense history found for ${result.name} (ID: ${id}). 📊`;
+                        messageDiv.style.display = 'block';
+                    }
+                } else {
+                    messageDiv.classList.add('error');
+                    messageDiv.textContent = (result.message || 'An error occurred while fetching data.') + ' ❌';
+                    messageDiv.style.display = 'block';
+                    displayName.textContent = 'N/A'; // Clear name if student not found
+                }
+            } catch (error) {
+                messageDiv.classList.add('error');
+                messageDiv.textContent = 'Network error or API is unreachable. Please check console for details. 📡';
+                messageDiv.style.display = 'block';
+                console.error('Error fetching student expenses:', error);
+                displayName.textContent = 'N/A'; // Clear name on network error
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', function() {
+            const logoutButton = document.getElementById('logoutButton');
+
+            // Function to handle logout
+            function handleLogout() {
+                sessionStorage.removeItem('studentData'); // Clear student data from session storage
+                window.location.href = 'studentlogin.html'; // Redirect to login page
+            }
+
+            // First, try to retrieve student data from sessionStorage (set by login page)
+            const studentDataString = sessionStorage.getItem('studentData');
+
+            if (studentDataString) {
+                const studentData = JSON.parse(studentDataString);
+                const studentId = studentData.student_id;
+                const studentName = studentData.name;
+
+                // Populate display elements
+                document.getElementById('displayStudentId').textContent = studentId;
+                document.getElementById('displayName').textContent = studentName;
+
+                // Automatically fetch expenses for the logged-in student
+                fetchStudentExpenses(studentId);
+
+                // Show logout button if logged in
+                logoutButton.style.display = 'block';
+
+            } else {
+                // If no student data in sessionStorage, redirect to login page
+                window.location.href = 'studentlogin.html';
+            }
+
+            // Add event listener for the logout button
+            logoutButton.addEventListener('click', handleLogout);
+        });
+    </script>
+</body>
+</html>
